@@ -3,7 +3,7 @@ import Shimmer from "./Shimmer";
 import { useParams } from "react-router-dom";
 import useRestaurantMenu from "../utils/useRestaurantMenu";
 import {
-  swiggy_menu_api_URL,
+  MENU_URL,
   IMG_CDN_URL,
   ITEM_IMG_CDN_URL,
   MENU_ITEM_TYPE_KEY,
@@ -12,40 +12,53 @@ import {
 
 const RestaurantMenu = () => {
   const { resId } = useParams();
-  console.log(resId);
 
   //later
-  // const [restaurant, menuItems] = useRestaurant(
-  //   swiggy_menu_api_URL,
-  //   resId,
-  //   RESTAURANT_TYPE_KEY,
-  //   MENU_ITEM_TYPE_KEY
-  // );
+  const [resInfo, menuItems] = useRestaurantMenu(
+    MENU_URL,
+    resId,
+    RESTAURANT_TYPE_KEY,
+    MENU_ITEM_TYPE_KEY
+  );
 
-  const resInfo = useRestaurantMenu(resId);
   if (resInfo === null) {
     return <Shimmer />;
   }
-  console.log(resInfo);
-  const { name, avgRating, costForTwoMessage, cuisines, id } =
-    resInfo?.cards[0]?.card?.card?.info;
-  const { itemCards } =
-    resInfo?.cards[2]?.groupedCard?.cardGroupMap?.REGULAR?.cards[1]?.card?.card;
 
-  console.log(itemCards);
   return (
     <div className="menu">
-      <h1>{name}</h1>
-      <h2>{cuisines.join(", ")}</h2>
-      <h3>{costForTwoMessage}</h3>
-      <h2>{avgRating}</h2>
+      <img
+        className="restaurant-img"
+        src={IMG_CDN_URL + resInfo?.cloudinaryImageId}
+        alt={resInfo?.name}
+      />
+      <h1>{resInfo?.name}</h1>
+      <h2>{resInfo?.cuisines.join(", ")}</h2>
+      {/* <h3>{costForTwoMessage}</h3>
+      <h2>{avgRating}</h2> */}
+      <div className="menu-title-wrap">
+        <h3>Recommended</h3>
+        <p className="menu-count">{menuItems?.length} ITEMS</p>
+      </div>
       <h3>
         <ul>
-          {itemCards.map((item) => (
-            <li key={item.card.info.id}>
-              {item.card.info.name}- {"  Rs."}
-              {item.card.info.price / 100}
-            </li>
+          {menuItems.map((item) => (
+            <div key={item?.id}>
+              <div className="menu-items-details">
+                <h3 className="item-name">{item?.name}</h3>
+                <p className="item-cost">
+                  {item?.price > 0
+                    ? new Intl.NumberFormat("en-IN", {
+                        style: "currency",
+                        currency: "INR",
+                      }).format(item?.price / 100)
+                    : " "}
+                </p>
+              </div>
+              <div>
+                <div className="items-description">{item?.description}</div>
+              </div>
+            </div>
           ))}
         </ul>
       </h3>

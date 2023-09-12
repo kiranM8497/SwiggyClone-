@@ -1,18 +1,20 @@
-import { CDN_URL } from "./utils/constant";
+import {
+  CDN_URL,
+  MENU_URL,
+  IMG_CDN_URL,
+  ITEM_IMG_CDN_URL,
+  MENU_ITEM_TYPE_KEY,
+  RESTAURANT_TYPE_KEY,
+} from "../utils/constant";
 
-
-const RestraurantCard = (props) => {
-  const { resData } = props;
-
-  const {
-    cloudinaryImageId,
-    name,
-    cuisines,
-    avgRating,
-    costForTwo,
-    sla,
-  } = resData;
-
+const RestraurantCard = ({
+  name,
+  cuisines,
+  cloudinaryImageId,
+  avgRating,
+  costForTwo,
+  sla,
+}) => {
   const deliveryTime = sla?.deliveryTime || "N/A"; // Use a default value if deliveryTime is not available
   return (
     <div
@@ -21,11 +23,7 @@ const RestraurantCard = (props) => {
         backgroundColor: "#f0f0f0",
       }}
     >
-      <img
-        src={CDN_URL + resData.cloudinaryImageId}
-        alt="food"
-        className="res-logo"
-      />
+      <img src={CDN_URL + cloudinaryImageId} alt="food" className="res-logo" />
       <h4>{name}</h4>
       <h4>{cuisines.join(", ")}</h4>
       <h4>{avgRating} stars</h4>
@@ -34,6 +32,5 @@ const RestraurantCard = (props) => {
     </div>
   );
 };
-
 
 export default RestraurantCard;
