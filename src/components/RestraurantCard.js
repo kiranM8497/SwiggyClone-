@@ -17,18 +17,21 @@ const RestraurantCard = ({
 }) => {
   const deliveryTime = sla?.deliveryTime || "N/A"; // Use a default value if deliveryTime is not available
   return (
-    <div
-      className="res-card"
-      style={{
-        backgroundColor: "#f0f0f0",
-      }}
-    >
-      <img src={CDN_URL + cloudinaryImageId} alt="food" className="res-logo" />
-      <h4>{name}</h4>
-      <h4>{cuisines.join(", ")}</h4>
-      <h4>{avgRating} stars</h4>
-      <h4>{costForTwo} </h4>
-      <h4>{deliveryTime} minutes</h4>
+    <div className="m-4 p-4 w-[250px] rounded-xl bg-gray-100  min-h-[550px] max-h-[550px] flex flex-col hover:bg-gray-300  ">
+      <div>
+        <img
+          src={CDN_URL + cloudinaryImageId}
+          alt="food"
+          className="rounded-md "
+        />
+      </div>
+      <div className="m-6 ">
+        <h4 className="font-bold py-4 text-lg">{name}</h4>
+        <h4>{cuisines.join(", ")}</h4>
+        <h4>{avgRating} stars</h4>
+        <h4>{costForTwo} </h4>
+        <h4>{deliveryTime} minutes</h4>
+      </div>
     </div>
   );
 };
