@@ -1,5 +1,5 @@
-import RestraurantCard from "./RestraurantCard";
-import resList from "../utils/mockData";
+import RestraurantCard, { withPromotedComponent } from "./RestraurantCard";
+
 import { useState, useEffect } from "react";
 import Shimmer from "./Shimmer";
 import useOnlineStatus from "../utils/useOnlineStatus";
@@ -10,8 +10,9 @@ const Body = () => {
   const [listOfRestraurants, setListOfRestraurants] = useState([]);
   const [filteredRestaurant, setFilteredRestaurants] = useState([]);
   const [searchText, setSearchText] = useState("");
+  const restaurantcardPromoted = withPromotedComponent(RestraurantCard);
 
-  console.log("render", listOfRestraurants);
+  // console.log("render", listOfRestraurants);
 
   useEffect(() => {
     fetchData();
@@ -21,7 +22,6 @@ const Body = () => {
     const data = await fetch(
       "https://corsproxy.io/?https://www.swiggy.com/dapi/restaurants/list/v5?lat=12.9351929&lng=77.62448069999999&page_type=DESKTOP_WEB_LISTING"
       //  "https://www.swiggy.com/dapi/restaurants/list/v5?lat=30.3164945&lng=78.03219179999999&is-seo-homepage-enabled=true"
-      // "https://www.swiggy.com/dapi/restaurants/list/v5?lat=30.3164945&lng=78.03219179999999&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING"
     );
 
     const json = await data.json();
@@ -112,7 +112,16 @@ const Body = () => {
       <div className="res-container flex flex-wrap">
         {filteredRestaurant?.map((restaurant) => (
           <Link to={"/restaurant/" + restaurant?.info.id}>
-            <RestraurantCard {...restaurant?.info} />
+            {/* higher order component 
+            addin a promoted tag on top of restaurent caards if that property is true */}
+
+            {restaurant?.info?.promoted ? (
+              <restaurantcardPromoted {...restaurant?.info} />
+            ) : (
+              <RestraurantCard {...restaurant?.info} />
+            )}
+
+            {/* <RestraurantCard {...restaurant?.info} /> */}
           </Link>
         ))}
       </div>

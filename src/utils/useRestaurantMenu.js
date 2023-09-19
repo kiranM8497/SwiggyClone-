@@ -31,6 +31,8 @@ const useRestaurantMenu = (
             ?.info || null;
         setResInfo(restaurantData);
 
+        console.log(restaurantData);
+
         // Set menu item data
         const menuItemsData =
           json?.data?.cards
@@ -42,13 +44,15 @@ const useRestaurantMenu = (
             ?.map((x) => x.itemCards)
             .flat()
             .map((x) => x.card?.info) || [];
-
+        console.log(menuItems);
         const uniqueMenuItems = [];
         menuItemsData.forEach((item) => {
           if (!uniqueMenuItems.find((x) => x.id === item.id)) {
             uniqueMenuItems.push(item);
           }
         });
+
+        console.log(uniqueMenuItems);
         setMenuItems(uniqueMenuItems);
       }
     } catch (err) {
